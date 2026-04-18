@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PW 1100G</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="importMap" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.178.0/three.tsl.js" integrity="sha512-CO5CJPx+dRkLZPY3a29xmXHm1K17hJ2e92lZfebAeNgoKGy9wERaDjSFfpmUf9jApezOTv+8fHEP9LBBK15iaA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.178.0/examples/js/controls/OrbitControls.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.178.0/examples/js/loaders/GLTFLoader.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script type="module" src="./guiSetup.js"></script>
+    
+
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header d-flex justify-content-between align-items-center">
+            <div class="container flex-1">
+                <h1>Ignition</h1>
+                <p class="subtitle text-dark">ATA 74</p>
+            </div>
+            <div class="container flex-1 exit d-flex justify-content-end align-items-center">
+                <button class="exit-btn" onclick="exitPage()" title="Exit to Home">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </header>
+        
+        <div class="viewer-container">
+            <canvas id="three-canvas" style="touch-action: auto;"></canvas>
+        </div>
+
+
+        <!-- <div id="control-wrapper" style="position: absolute; top: 13%; left: 95%;">
+            <i class="fa-solid fa-sliders text-warning"></i>
+        </div> -->
+        
+        <!-- <div class="mode-indicator" style="margin-top: 5%; position: absolute; top: 82%; left: 88%;">
+            <span id="current-mode" class="status status--info">Realistic Mode</span>
+        </div> -->
+    </div>
+
+    <div id="tooltip" class="row" style="position: absolute; top: 11%; left: 1%; visibility: hidden; color:#000000; padding:5px 0px; border-radius:4px;pointer-events:auto;">
+        <div class="card" style="width: 22rem; background-color: #6f6f6fa5;color: #ececec;">
+            <button type="button" class="btn-close btn-close-white pt-2" aria-label="close" style="text-align: left; position: relative;top: 0px; left: 92%;box-shadow: none;" onclick="btnClose()"> </button>
+            <img src="" style="object-fit: contain;" class="card-img-top mt-1 rounded" id="tool-tip-video"></img>
+            <div class="card-body" >
+                <h3 class="card-title text-warning" id="tool-tip-title">Card title</h3>
+                <div style="overflow-y: scroll; scroll-behavior: smooth; pointer-events:auto; max-height: 340px;">
+                    <p class="card-text" style="font-size:1rem;" id="tool-tip-description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlayText">
+        <div class="volume">
+            <i class="fa-solid fa-volume-high"></i>
+        </div> <hr>
+        <ul id="overlayText">
+            <li>We will begin the maintenance of Ignition Assembly by first detaching the Ignition Cable from the Ignition Plug.</li>
+            <li>This process is done using a Spanner which is placed on the cable bolt and rotating it anti-clockwise to loosen it.</li>
+            <li>As the bolt is loosened using the spanner, the bolt then can be removed by the hands if it is reachable.</li>
+        </ul>
+    </div>
+
+    <div class="audio-container">
+        <Audio class="cable-detaching" src="../../../assets/detaching the cable.mp3"></Audio>
+        <Audio class="plug-removal" src="../../../assets/removing the plug.mp3"></Audio>
+    </div>
+<!--HAND POINTERS-->
+
+   <!-- <div class="p-1" id="oilFillTaskBtns1" 
+     style="visibility: hidden; position: absolute; top: 34%; left: 50%; width: 30px; height: 30px;
+            border-radius: 100%; background-color: rgba(230, 230, 224, 0.684);
+            border: 2px solid #000; cursor: pointer;">
+    <img src="assets/hand-pointer.svg" alt="pointer" style="width: 100%; height: 100%;">
+</div> -->
+
+<!-- <div class="p-1" id="oilFillTaskBtns2" 
+     style="visibility: hidden; position: absolute; top: 36%; left: 48%; width: 30px; height: 30px;
+            border-radius: 100%; background-color: rgba(230, 230, 224, 0.684);
+            border: 2px solid #000; cursor: pointer;">
+    <img src="assets/hand-pointer.svg" alt="pointer" style="width: 100%; height: 100%;">
+</div> -->
+
+<!-- <div class="p-1" id="oilFillTaskBtns3" 
+     style="visibility: hidden; position: absolute; top: 38%; left: 48%; width: 30px; height: 30px;
+            border-radius: 100%; background-color: rgba(230, 230, 224, 0.684);
+            border: 2px solid #000; cursor: pointer;">
+    <img src="assets/hand-pointer.svg" alt="pointer" style="width: 100%; height: 100%;">
+</div> -->
+
+<!-- <div class="p-1" id="oilFillTaskBtns4" 
+     style="visibility: hidden; position: absolute; top: 35%; left: 48%; width: max-content; height: auto;
+            border-radius: 50px; background-color: rgba(230, 230, 224, 0.684);
+            border: 2px solid #000; cursor: pointer;">
+    <img src="assets/hand-pointer.svg" alt="pointer" style="width: 20px; height: 20px; vertical-align: middle;">
+    Replace with new Plug Packing
+</div> -->
+    
+
+<!--PLANE ENGINE IMAGE-->
+    <!-- <div class="plane-image" id="plane-image" style="position: absolute;top: 20%; left: 20%; max-width: 60%; max-height: 60%;">
+        <img src="../../../assets/complete engine.jpg" alt="full-engine image" style="width: 100%; height: 100%; object-fit: contain;">
+    </div> -->
+    <!-- <script src="lil-gui.min.js"></script>
+    <script src="gui.js"></script> -->
+    <script type="module" src="../../main.js"></script>
+    <script type="module" src="./starter.js"></script>
+    
+
+    <script>
+
+        //Draggable Div
+(() => {
+  const dragDiv = document.querySelector(".overlayText");
+  let offsetX = 0, offsetY = 0, isDragging = false;
+
+  dragDiv.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    const rect = dragDiv.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    dragDiv.style.cursor = "grabbing";
+    e.preventDefault(); // prevent selection
+});
+
+document.addEventListener("mouseup", () => {
+    isDragging = false;
+    dragDiv.style.cursor = "move";
+});
+
+document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    dragDiv.style.left = `${e.clientX - offsetX}px`;
+    dragDiv.style.top = `${e.clientY - offsetY}px`;
+  });
+})();
+
+        let controlToggle = false;
+        function btnClose(){
+            document.getElementById('tooltip').classList.remove('visible');        
+        }
+
+        function exitPage(){
+            window.open('/index.html', "_blank");
+
+            // Attempt to close the current tab
+            window.open('', '_self'); 
+            window.close();
+        }
+
+        const control_wrapper = document.getElementById('control-wrapper')
+        const gui_container = document.getElementById('gui-container')
+        control_wrapper.addEventListener('click', ()=>{
+            controlToggle = !controlToggle;
+            if(controlToggle){
+                gui_container.style.visibility = 'show'
+            }else{
+                gui_container.style.visibility = 'hidden'
+            }
+        })
+
+    </script>
+</body>
+</html>

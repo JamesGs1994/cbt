@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Production
+dist/
+
+# Misc
+.DS_Store
+*.pem
+
+# IDEs
+.vscode/
+.idea/
+
+# Local env files
+.env*.local
+*.zip
