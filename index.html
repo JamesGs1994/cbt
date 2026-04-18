@@ -50,7 +50,30 @@
       crossorigin="anonymous"
     ></script>
 
-    <style></style>
+    <style>
+      body.view-videos .nav-bar,
+      body.view-videos .hero-img-container {
+        display: none !important;
+      }
+      body.view-videos .hero-container {
+        padding: 2rem !important;
+        justify-content: center !important;
+      }
+      body.view-videos .module-container {
+        width: 100% !important;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      body.view-videos .module-lists {
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+      body.view-videos .items-body-content {
+        width: 100% !important;
+      }
+    </style>
   </head>
   <body>
     <nav class="nav-bar bg-transparent w-100 p-3">
@@ -113,12 +136,17 @@
     </div>
 
     <script>
+      // Check for view=videos parameter
+      if (window.location.search.includes("view=videos")) {
+        document.body.classList.add("view-videos");
+      }
+
       // Attach click event to each menu item
       document.querySelectorAll(".items-body-content").forEach((item) => {
         item.addEventListener("click", () => {
           const moduleName = item.dataset.module;
           if (moduleName) {
-            const url = `src/modules/${moduleName}/launch.html`;
+            const url = `./src/modules/${moduleName}/launch.html${window.location.search}`;
             window.open(url, "_self");
           }
         });

@@ -152,11 +152,7 @@ document.addEventListener("mousemove", (e) => {
         }
 
         function exitPage(){
-            window.open('/index.html', "_blank");
-
-            // Attempt to close the current tab
-            window.open('', '_self'); 
-            window.close();
+            window.location.href = `../../../index.html${window.location.search}`;
         }
 
         const control_wrapper = document.getElementById('control-wrapper')

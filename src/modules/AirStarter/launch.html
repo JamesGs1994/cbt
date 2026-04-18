@@ -119,11 +119,7 @@
         }
 
         function exitPage(){
-            window.open('/index.html', "_blank");
-
-            // Attempt to close the current tab
-            window.open('', '_self'); // Some browsers allow this trick
-            window.close();
+            window.location.href = `../../../index.html${window.location.search}`;
         }
 
         // const control_wrapper = document.getElementById('control-wrapper')
