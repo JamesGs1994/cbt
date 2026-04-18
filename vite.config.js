@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/cbt/',
+  base: process.env.VERCEL ? '/' : '/cbt/',
   build: {
     outDir: 'dist',
   },
